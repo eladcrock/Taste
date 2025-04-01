@@ -29,7 +29,6 @@ body {
     margin: 0 auto; /* Center the container */
 }
 
-
 h1 {
     font-size: 2.8rem;
     margin-bottom: 30px;
@@ -37,15 +36,16 @@ h1 {
 }
 
 table {
-    width: 100%;
-    margin-bottom: 40px;
+    width: 100%; /* Table takes full width of the container */
     border-collapse: collapse;
+    table-layout: auto; /* Allow columns to adjust dynamically */
 }
 
 th, td {
-    padding: 15px;
+    padding: 10px; /* Adjust padding to reduce overall width */
     text-align: left;
-    font-size: 1.2rem;
+    font-size: 1rem; /* Slightly smaller font size */
+    word-wrap: break-word; /* Prevent text overflow */
 }
 
 th {
@@ -58,8 +58,18 @@ tr:nth-child(even) {
     background-color: #fafafa;
 }
 
+td input, #guestInput, #addedCharges {
+    width: 3rem; /* Reduced width to make input boxes smaller */
+    padding: 6px; /* Adjust padding for better appearance */
+    font-size: 0.9rem; /* Slightly smaller font size */
+    text-align: center; /* Center-align text */
+    border: 1px solid #ddd; /* Match the border style */
+    border-radius: 6px; /* Add border radius for consistency */
+    margin-top: 5px; /* Add consistent spacing */
+}
+
 td input {
-    width: 60px;
+    width: 3rem;
     padding: 8px;
     font-size: 1rem;
     text-align: center;
@@ -176,6 +186,7 @@ td input {
     border-radius: 8px; /* Add border radius to match others */
     margin-top: 5px; /* Add consistent spacing */
 }
+
 div:last-of-type {
     text-align: right; /* Align text to the right */
 }
@@ -198,6 +209,7 @@ div:nth-of-type(4) {
 #makeChangesBtn:focus {
     outline: none;
 }
+
 #makeChangesBtn {
     background-color: #1E88E5; /* Lighter blue on hover */
 }
