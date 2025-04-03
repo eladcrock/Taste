@@ -161,14 +161,18 @@ function resetTable() {
         row.innerHTML = `
             <td>${item.name}</td>
             <td>$${item.price.toFixed(2)}</td>
-            <td><input type="number" id="quantity-${index}" class="quantity" value="0" min="0" /></td>
+            <td><input type="number" id="quantity-${index}" class="quantity" value="" min="0" inputmode="numeric" pattern="[0-9]*" /></td>
+
+
+
+            
             <td id="subtotal-${index}">$0.00</td>
         `;
         tableBody.appendChild(row);
 
         // Add event listener to update subtotal dynamically
-        const quantityInput = document.getElementById(`quantity-${index}`);
-        quantityInput.addEventListener("input", () => updateLineItemSubtotal(item, index));
+        const quantity = document.getElementById(`quantity-${index}`);
+        quantity.addEventListener("input", () => updateLineItemSubtotal(item, index));
     });
 
     // Reset totals
