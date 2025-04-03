@@ -15,7 +15,7 @@
           <th>Item Name</th>
           <th>Price</th>
           <th>Quantity</th>
-          <th>Subtotal</th>
+          <th>$</th>
         </tr>
       </thead>
       <tbody>
@@ -37,8 +37,9 @@
     <!-- Keep the menuSummary div but leave it empty -->
     <button onclick="calculateTotal()">Calculate</button>
     <button class="reset-btn" onclick="resetTable()">Reset</button>
-    <button id="makeChangesBtn" class="button" style="display: none;" onclick="makeChanges()">Go Back</button>
+    <button id="makeChangesBtn" class="button" style="display: none;" onclick="makeChanges(); console.log('Go Back button clicked!')">Go Back</button>
     <script src="script.js"></script>
   </div>
 </body>
 </html>
+
