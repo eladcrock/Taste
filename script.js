@@ -202,32 +202,14 @@ function resetTable() {
     document.getElementById("addedCharges").value = "";
     document.getElementById("guestInput").value = "";
 
-    // Clear the table body and repopulate it with all menu items
-    const tableBody = document.getElementById("menuTable").getElementsByTagName("tbody")[0];
-    tableBody.innerHTML = ""; // Clear the table body
-    menuItems.forEach((item, index) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${item.name}</td>
-            <td>$${item.price.toFixed(2)}</td>
-            <td><input type="number" id="quantity-${index}" class="quantity" value="" min="0" inputmode="numeric" pattern="[0-9]*" /></td>
-            <td id="subtotal-${index}">$0.00</td>
-        `;
-        tableBody.appendChild(row);
-
-        // Add event listener to update subtotal dynamically
-        const quantity = document.getElementById(`quantity-${index}`);
-        quantity.addEventListener("input", () => updateLineItemSubtotal(item, index));
-    });
-
     // Reset totals
     document.getElementById("totalPrice").innerText = "0.00";
     document.getElementById("perPersonPrice").innerText = "0.00";
 
-    // Clear the menu summary
-    document.getElementById("menuSummary").innerHTML = "";
+    // Clear the table body and repopulate it with all menu items
+    populateTable();
 
-    // Show the "Calculate" button
+    // Ensure the "Calculate" button remains visible
     const calculateButton = document.querySelector('button[onclick="calculateTotal()"]');
     if (calculateButton) {
         calculateButton.style.display = "inline-block";
@@ -264,6 +246,8 @@ function populateTable() {
         quantityInput.addEventListener("input", () => updateSubtotal(item, index));
     });
 }
+
+
 function updateSubtotal(item, index) {
     const quantityInput = document.getElementById(`quantity-${index}`);
     const quantity = parseInt(quantityInput.value) || 0; // Default to 0 if input is empty
@@ -271,8 +255,30 @@ function updateSubtotal(item, index) {
 
     // Update the subtotal cell
     const subtotalCell = document.getElementById(`subtotal-${index}`);
-    subtotalCell.innerText = `$${subtotal.toFixed(2)}`;
+    if (subtotalCell) {
+        subtotalCell.innerText = `$${subtotal.toFixed(2)}`;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function renderWineOptions() {
