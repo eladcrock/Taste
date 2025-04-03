@@ -60,7 +60,8 @@ window.onload = () => {
         row.innerHTML = `
             <td>${item.name}</td>
             <td>$${item.price.toFixed(2)}</td>
-            <td><input type="number" id="quantity-${index}" class="quantity" value="0" min="0" /></td>
+            <td><input type="number" id="quantity-${index}" class="quantity" value="" min="0" inputmode="numeric" pattern="[0-9]*" /></td>
+
             <td id="subtotal-${index}">$0.00</td>
         `;
         tableBody.appendChild(row);
