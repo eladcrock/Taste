@@ -60,9 +60,7 @@ window.onload = () => {
         row.innerHTML = `
             <td>${item.name}</td>
             <td>$${item.price.toFixed(2)}</td>
-            <td>
-<input type="number" id="quantity-${index}" class="quantity" min="0" inputmode="numeric" pattern="[0-9]*/>
-            </td>
+            <td><input type="number" id="quantity-${index}" class="quantity" value="0" min="0" /></td>
             <td id="subtotal-${index}">$0.00</td>
         `;
         tableBody.appendChild(row);
@@ -94,6 +92,7 @@ function calculateTotal() {
     // Filter out unselected items and calculate the subtotal
     const selectedMenuItems = menuItems.filter((item, index) => {
         const quantity = parseInt(document.getElementById(`quantity-${index}`).value) || 0; // Default to 0
+        
         if (quantity > 0) {
             subtotal += item.price * quantity;
 
