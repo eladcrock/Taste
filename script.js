@@ -52,6 +52,7 @@ const menuItems = [
     { name: "Large dessert Board", price: 75.00, type: "Dessert" }
 ];
 
+
 // Dynamically add menu items to the table
 window.onload = () => {
     const tableBody = document.getElementById("menuTable").getElementsByTagName("tbody")[0];
@@ -82,32 +83,29 @@ function updateLineItemSubtotal(item, index) {
 }
 
 // Calculate totals when "Calculate" button is clicked
+
 function calculateTotal() {
     let subtotal = 0;
-    const selectedItems = {};
 
     // Get the added charges and number of guests
     const addedCharges = parseFloat(document.getElementById("addedCharges").value) || 0; // Default to 0
     const guestCount = parseInt(document.getElementById("guestInput").value) || 1; // Default to 1
 
-    // Filter out unselected items and calculate the subtotal
-    const selectedMenuItems = menuItems.filter((item, index) => {
-        const quantity = parseInt(document.getElementById(`quantity-${index}`).value) || 0; // Default to 0
-        
-        if (quantity > 0) {
-            subtotal += item.price * quantity;
-
-            // Add the quantity to the item object
-            item.quantity = quantity;
-
-            // Group selected items by category
-            if (!selectedItems[item.type]) {
-                selectedItems[item.type] = [];
+    // Retrieve the selected menu items and their quantities
+    const selectedMenuItems = [];
+    menuItems.forEach((item, index) => {
+        const quantityInput = document.getElementById(`quantity-${index}`);
+        if (quantityInput) {
+            const quantity = parseInt(quantityInput.value) || 0; // Default to 0
+            if (quantity > 0) {
+                subtotal += item.price * quantity;
+                selectedMenuItems.push({
+                    name: item.name,
+                    price: item.price,
+                    quantity: quantity,
+                });
             }
-            selectedItems[item.type].push(`${quantity} ${item.name}`);
-            return true; // Keep this item in the filtered list
         }
-        return false; // Remove this item from the filtered list
     });
 
     // Calculate the total and per person price
@@ -121,16 +119,32 @@ function calculateTotal() {
     // Update the table to show only selected items
     const tableBody = document.getElementById("menuTable").getElementsByTagName("tbody")[0];
     tableBody.innerHTML = ""; // Clear the table body
-    selectedMenuItems.forEach((item) => {
+    selectedMenuItems.forEach((item, index) => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${item.name}</td>
-            <td>$${item.price.toFixed(2)}</td>
-            <td>${item.quantity}</td>
-            <td>$${(item.price * item.quantity).toFixed(2)}</td>
+            <td><input type="number" value="${item.quantity}" min="0" id="quantity-${index}" class="quantity" /></td> <!-- Editable quantity -->
+            <td id="subtotal-${index}">$${(item.price * item.quantity).toFixed(2)}</td> <!-- Display the subtotal -->
         `;
         tableBody.appendChild(row);
+
+        // Add event listener to update subtotal dynamically
+        const quantityInput = document.getElementById(`quantity-${index}`);
+        quantityInput.addEventListener("input", () => {
+            const newQuantity = parseInt(quantityInput.value) || 0;
+            document.getElementById(`subtotal-${index}`).innerText = `$${(item.price * newQuantity).toFixed(2)}`;
+        });
     });
+
+    // Update the table header to reflect the new layout
+    const tableHeader = document.getElementById("menuTable").getElementsByTagName("thead")[0];
+    tableHeader.innerHTML = `
+        <tr>
+            <th>Item Name</th>
+            <th>Quantity</th> <!-- Editable Quantity column -->
+            <th>Subtotal</th>
+        </tr>
+    `;
 
     // Ensure the "Calculate" button remains visible
     const calculateButton = document.querySelector('button[onclick="calculateTotal()"]');
@@ -138,14 +152,14 @@ function calculateTotal() {
         calculateButton.style.display = "inline-block"; // Keep the button visible
     }
 
-    // Show the "Make Changes" button
+    // Hide the "Go Back" button (if applicable)
     const makeChangesButton = document.getElementById("makeChangesBtn");
     if (makeChangesButton) {
-        makeChangesButton.style.display = "inline-block"; // Ensure the button is visible
+        makeChangesButton.style.display = "none";
     }
 }
 
-// Reset all values to default
+
 function resetTable() {
     const confirmReset = confirm("Are you sure you want to reset?");
     if (!confirmReset) return;
@@ -163,10 +177,6 @@ function resetTable() {
             <td>${item.name}</td>
             <td>$${item.price.toFixed(2)}</td>
             <td><input type="number" id="quantity-${index}" class="quantity" value="" min="0" inputmode="numeric" pattern="[0-9]*" /></td>
-
-
-
-            
             <td id="subtotal-${index}">$0.00</td>
         `;
         tableBody.appendChild(row);
@@ -189,9 +199,43 @@ function resetTable() {
         calculateButton.style.display = "inline-block";
     }
 
-    // Hide the "Make Changes" button
+    // Hide the "Go Back" button
     const makeChangesButton = document.getElementById("makeChangesBtn");
     if (makeChangesButton) {
         makeChangesButton.style.display = "none";
     }
+
+    // Ensure the "Reset" button remains visible
+    const resetButton = document.querySelector('button[onclick="resetTable()"]');
+    if (resetButton) {
+        resetButton.style.display = "inline-block";
+    }
+}
+function populateTable() {
+    const tableBody = document.getElementById("menuTable").getElementsByTagName("tbody")[0];
+    tableBody.innerHTML = ""; // Clear the table body
+
+    menuItems.forEach((item, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${item.name}</td>
+            <td>$${item.price.toFixed(2)}</td>
+            <td><input type="number" id="quantity-${index}" class="quantity" value="0" min="0" /></td>
+            <td id="subtotal-${index}">$0.00</td>
+        `;
+        tableBody.appendChild(row);
+
+        // Add event listener to update subtotal dynamically
+        const quantityInput = document.getElementById(`quantity-${index}`);
+        quantityInput.addEventListener("input", () => updateSubtotal(item, index));
+    });
+}
+function updateSubtotal(item, index) {
+    const quantityInput = document.getElementById(`quantity-${index}`);
+    const quantity = parseInt(quantityInput.value) || 0; // Default to 0 if input is empty
+    const subtotal = item.price * quantity;
+
+    // Update the subtotal cell
+    const subtotalCell = document.getElementById(`subtotal-${index}`);
+    subtotalCell.innerText = `$${subtotal.toFixed(2)}`;
 }
