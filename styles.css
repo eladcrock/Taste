@@ -243,3 +243,10 @@ td:nth-child(4), th:nth-child(4) {
     border: 1px solid #ddd;
     margin-bottom: 10px;
 }
+
+.fine-print {
+    font-size: 0.75em; /* Smaller font size */
+    color: #999; /* Light grey color */
+    font-weight: 300; /* Lighter font weight */
+    margin-top: 10px; /* Optional: Add some spacing */
+}
