@@ -52,6 +52,40 @@ const menuItems = [
     { name: "Large dessert Board", price: 75.00, type: "Dessert" }
 ];
 
+const wines = {
+    sparkling: [
+      { name: "NV Adami, Bosco Di Gica, Prosecco Superiore Brut", glassPrice: 15 },
+      { name: "NV Contadi Castaldi, Brut Rosé", glassPrice: 18 },
+      { name: "2021 Schramsberg, Brut Blanc de Blancs", glassPrice: 23 },
+      { name: "NV Lanson, Le Black Label, Brut", glassPrice: 25 }
+    ],
+    white: [
+      { name: "2023 Frog’s Leap, Sauvignon Blanc", glassPrice: 14, quartinoPrice: 18 },
+      { name: "2022 Buzzinelli, Pinot Grigio", glassPrice: 15, quartinoPrice: 18 },
+      { name: "2023 Massican, Gemina, Greco Fiano Falanghina Blend", glassPrice: 16, quartinoPrice: 22 },
+      { name: "2022 Cornarea, Roero Arneis", glassPrice: 16, quartinoPrice: 22 },
+      { name: "2023 Frank Family, Chardonnay", glassPrice: 17, quartinoPrice: 23 },
+      { name: "2023 Spottswoode, Sauvignon Blanc", glassPrice: 18, quartinoPrice: 26 },
+      { name: "2021 Antinori Napa Valley, A26, Chardonnay", glassPrice: 24, quartinoPrice: 40 }
+    ],
+    rose: [
+      { name: "2022 Tormaresca, Calafuria, Negroamaro Rosé", glassPrice: 11, quartinoPrice: 15 },
+      { name: "2022 Handwritten, Carignan Blend Rosé", glassPrice: 12, quartinoPrice: 16 }
+    ],
+    red: [
+      { name: "2022 Villa Calcinaia, Cappone, Chianti Classico", glassPrice: 13, quartinoPrice: 18 },
+      { name: "2022 Cline, Seven Ranchlands, Pinot Noir", glassPrice: 13, quartinoPrice: 18 },
+      { name: "2021 Neyers, Vista Notre, Zinfandel", glassPrice: 16, quartinoPrice: 25 },
+      { name: "2022 Clos du Val, Cabernet Sauvignon", glassPrice: 21, quartinoPrice: 33 },
+      { name: "2019 David Arthur, Proprietary Red, Cab Sauvignon Blend", glassPrice: 21, quartinoPrice: 33 },
+      { name: "2022 Flowers, Pinot Noir", glassPrice: 21, quartinoPrice: 33 },
+      { name: "2019 Cavalier Bartolomeo, Barolo Altenasso", glassPrice: 22, quartinoPrice: 34 }
+    ]
+  };
+  
+  let totalPrice = 0;
+  
+
 
 // Dynamically add menu items to the table
 window.onload = () => {
@@ -239,3 +273,41 @@ function updateSubtotal(item, index) {
     const subtotalCell = document.getElementById(`subtotal-${index}`);
     subtotalCell.innerText = `$${subtotal.toFixed(2)}`;
 }
+
+
+function renderWineOptions() {
+  // Select DOM elements to insert wine options
+  const sparklingSelect = document.getElementById("sparklingWines");
+  const whiteSelect = document.getElementById("whiteWines");
+  const roseSelect = document.getElementById("roseWines");
+  const redSelect = document.getElementById("redWines");
+
+  // Helper function to populate wine options (with glass and quartino prices)
+  function populateWineSelect(wineType, wineSelectElement) {
+    const winesArray = wines[wineType];
+
+    winesArray.forEach(wine => {
+      const optionGlass = document.createElement("option");
+      optionGlass.value = wine.glassPrice;
+      optionGlass.textContent = `${wine.name} - Glass: $${wine.glassPrice}`;
+      wineSelectElement.appendChild(optionGlass);
+
+      // Check if Quartino price exists for this wine
+      if (wine.quartinoPrice) {
+        const optionQuartino = document.createElement("option");
+        optionQuartino.value = wine.quartinoPrice;
+        optionQuartino.textContent = `${wine.name} - Quartino: $${wine.quartinoPrice}`;
+        wineSelectElement.appendChild(optionQuartino);
+      }
+    });
+  }
+
+  // Populate each wine category
+  populateWineSelect("sparkling", sparklingSelect); // Only glass prices for sparkling
+  populateWineSelect("white", whiteSelect);
+  populateWineSelect("rose", roseSelect);
+  populateWineSelect("red", redSelect);
+}
+
+// Call the function to render wine options when the page loads
+window.onload = renderWineOptions;
