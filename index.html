@@ -37,9 +37,96 @@
     <!-- Keep the menuSummary div but leave it empty -->
     <button onclick="calculateTotal()">Calculate</button>
     <button class="reset-btn" onclick="resetTable()">Reset</button>
-    <br></br>
-<p class="fine-print">Optional wine pairing feature coming soon</p>   
     <script src="script.js"></script>
+    <div class="collapsible-section">
+      <button class="collapsible">Wine Pairing Options</button>
+      <div class="content">
+        <div class="wine-category">
+          <button class="collapsible">Sparkling</button>
+          <div class="content">
+            <table id="sparklingTable" class="menuTable">
+              <thead>
+                <tr>
+                  <th>Wine Name</th>
+                  <th>Serving Size</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Sparkling wines will be dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+    
+        <div class="wine-category">
+          <button class="collapsible">White and Rosé</button>
+          <div class="content">
+            <table id="whiteRoseTable" class="menuTable">
+              <thead>
+                <tr>
+                  <th>Wine Name</th>
+                  <th>Serving Size</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- White and Rosé wines will be dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+    
+        <div class="wine-category">
+          <button class="collapsible">Red</button>
+          <div class="content">
+            <table id="redTable" class="menuTable">
+              <thead>
+                <tr>
+                  <th>Wine Name</th>
+                  <th>Serving Size</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Red wines will be dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+    
+        <div class="wine-category">
+          <button class="collapsible">Coravin</button>
+          <div class="content">
+            <table id="coravinTable" class="menuTable">
+              <thead>
+                <tr>
+                  <th>Wine Name</th>
+                  <th>Serving Size</th>
+                  <th>Quantity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Coravin wines will be dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+  <label for="wineGuestInput">Number of Guests for Wine Pairing:</label>
+  <input type="number" class="quantity" id="wineGuestInput" value="1" min="1" />
+</div>
+    
+        <div>
+          <p><strong>Total Wine Cost:</strong> $<span id="wineTotalPrice">0.00</span></p>
+          <p><strong>Wine Price Per Person:</strong> $<span id="winePerPersonPrice">0.00</span></p>
+          <button id="calculateWineButton"onclick="wineCalculate()">Calculate Wine Pairing</button>
+          <button id="resetWineButton" class="reset-button" onclick="resetWineSelections()">Reset Wine Pairing</button>
+
+        </div>
+      </div>
+    </div>
   </div>
+  
 </body>
 </html>
