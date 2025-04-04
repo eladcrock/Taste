@@ -221,4 +221,81 @@ td:nth-child(4), th:nth-child(4) {
 .fine-print {
     font-size: 0.8em; /* Smaller font size */
     color: #666; /* Optional: Make the text a lighter color */
+    
+}
+
+.collapsible {
+    background-color: #f1f1f1;
+    color: #333;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.collapsible:hover {
+    background-color: #D76E3F; /* Rust orange color */
+
+}
+
+.collapsible.active {
+    background-color: #ccc;
+}
+
+.content {
+    display: none;
+    overflow: hidden;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+/* Ensure table rows and inputs are visible */
+table.menuTable tbody tr {
+    display: table-row;
+}
+
+input.wine-quantity {
+    display: inline-block;
+    width: 50px; /* Adjust width as needed */
+}
+.quantity {
+    width: 50px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.quantity:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.wine-size {
+    width: 100px;
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    appearance: none;
+    text-align: center;
+    cursor: pointer;
+}
+/* Style for the Reset Wine Selections button */
+.reset-button {
+    background-color: #ff4d4d; /* Red background */
+    
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover effect for the button */
+.reset-button:hover {
+    background-color: #e60000; /* Darker red on hover */
 }
