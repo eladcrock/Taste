@@ -121,6 +121,15 @@ function updateLineItemSubtotal(item, index) {
 // Calculate totals when "Calculate" button is clicked
 
 function calculateTotal() {
+    
+       // Disable the "Calculate" button to prevent further clicks
+    let calculateButton = document.getElementById("calculateButton");
+    if (calculateButton) {
+        calculateButton.disabled = true; // Disable the button
+        calculateButton.style.opacity = "0.5"; // Optional: Make it visually appear disabled
+        calculateButton.style.cursor = "not-allowed"; // Optional: Change the cursor to indicate it's disabled
+    }
+    
     let subtotal = 0;
 
     // Get the added charges and number of guests
@@ -183,7 +192,7 @@ function calculateTotal() {
     `;
 
     // Ensure the "Calculate" button remains visible
-    const calculateButton = document.querySelector('button[onclick="calculateTotal()"]');
+    calculateButton = document.querySelector('button[onclick="calculateTotal()"]');
     if (calculateButton) {
         calculateButton.style.display = "inline-block"; // Keep the button visible
     }
@@ -245,6 +254,9 @@ function resetTable() {
     const calculateButton = document.querySelector('button[onclick="calculateTotal()"]');
     if (calculateButton) {
         calculateButton.style.display = "inline-block";
+        calculateButton.disabled = false; // Re-enable the "Calculate" button
+        calculateButton.style.opacity = "1"; // Restore opacity
+        calculateButton.style.cursor = "pointer"; // Change cursor back to normal
     }
 
     // Hide the "Go Back" button
@@ -286,8 +298,12 @@ function updateSubtotal(item, index) {
 
     // Update the subtotal cell
     const subtotalCell = document.getElementById(`subtotal-${index}`);
-    subtotalCell.innerText = `$${subtotal.toFixed(2)}`;
+    if (subtotalCell) {
+        subtotalCell.innerText = `$${subtotal.toFixed(2)}`;
+    }
 }
+
+
 function populateWineTables() {
     const categories = {
         sparkling: "sparklingTable",
@@ -412,62 +428,8 @@ function wineCalculate() {
     document.getElementById("winePerPersonPrice").innerText = winePerPerson.toFixed(2);
 
     // Dynamically render the table with only selected wines
-function wineCalculate() {
-    console.log("wineCalculate function called"); // Debugging: Verify the function is called
-
-    let wineSubtotal = 0;
-
-    // Array to store selected wines
-    const selectedWines = [];
-
-    // Iterate through each wine category
-    Object.keys(wineItems).forEach((category) => {
-        wineItems[category].forEach((wine, index) => {
-            const sizeSelect = document.getElementById(`${category}-size-${index}`);
-            const quantityInput = document.getElementById(`${category}-quantity-${index}`);
-            const quantity = parseInt(quantityInput?.value) || 0;
-
-            let price = 0;
-
-            // Determine the price based on the serving size
-            if (sizeSelect && sizeSelect.value === "5 oz") price = wine.price5oz || 0;
-            if (sizeSelect && sizeSelect.value === "Quartino") price = wine.priceQuartino || 0;
-            if (!sizeSelect && category === "sparkling") price = wine.price5oz || 0; // Fixed 5 oz for Sparkling
-            if (!sizeSelect && category === "coravin") price = wine.price4oz || 0; // Fixed 4 oz for Coravin
-
-            // Add to the subtotal
-            wineSubtotal += price * quantity;
-
-            // If the wine has a quantity greater than 0, add it to the selected wines
-            if (quantity > 0) {
-                selectedWines.push({
-                    name: wine.name,
-                    size: sizeSelect ? sizeSelect.value : category === "sparkling" ? "5 oz" : "4 oz",
-                    quantity: quantity,
-                    price: price,
-                    subtotal: price * quantity
-                });
-            }
-
-            // Debugging: Log the calculations for each wine
-            console.log(`Category: ${category}, Wine: ${wine.name}, Quantity: ${quantity}, Price: ${price}, Subtotal: ${wineSubtotal}`);
-        });
-    });
-
-    // Get the number of guests for wine pairing
-    const wineGuestCount = parseInt(document.getElementById("wineGuestInput")?.value) || 1; // Default to 1
-    const winePerPerson = wineSubtotal / wineGuestCount;
-
-    // Debugging: Log the final calculations
-    console.log(`Total Wine Subtotal: ${wineSubtotal}, Guests: ${wineGuestCount}, Per Person: ${winePerPerson}`);
-
-    // Update the UI
-    document.getElementById("wineTotalPrice").innerText = wineSubtotal.toFixed(2);
-    document.getElementById("winePerPersonPrice").innerText = winePerPerson.toFixed(2);
-
-    // Dynamically render the table with only selected wines
     renderSelectedWinesTable(selectedWines);
-}}
+}
 
 
 
