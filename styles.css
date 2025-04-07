@@ -251,8 +251,6 @@ td:nth-child(4), th:nth-child(4) {
     padding: 10px;
     border: 1px solid #ddd;
     margin-bottom: 10px;
-    max-width: 100%; /* Prevent it from stretching beyond the container */
-
 }
 /* Ensure table rows and inputs are visible */
 table.menuTable tbody tr {
@@ -278,7 +276,7 @@ input.wine-quantity {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 .wine-size {
-    width: 100px;
+    width: 50px;
     padding: 5px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -300,4 +298,15 @@ input.wine-quantity {
 /* Hover effect for the button */
 .reset-button:hover {
     background-color: #e60000; /* Darker red on hover */
+}
+table {
+    width: 100%; /* Make the table take up the full width of its container */
+    table-layout: auto; /* Allow columns to adjust based on content */
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
+
+/* Ensure the parent container allows scrolling */
+.table-container {
+    overflow-x: auto; /* Enable horizontal scrolling for the container */
+    white-space: nowrap; /* Prevent content from wrapping */
 }
