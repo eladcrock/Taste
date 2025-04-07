@@ -496,6 +496,11 @@ function renderSelectedWinesTable(selectedWines) {
 }
 
 function resetWineSelections() {
+    const userConfirmed = confirm("Are you sure you want to reset wines?");
+    if (!userConfirmed) {
+        // If the user cancels, do nothing
+        return;
+    }
     console.log("Resetting wine selections...");
 
     // Remove the selected wines table if it exists.
