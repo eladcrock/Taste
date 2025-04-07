@@ -312,6 +312,7 @@ function populateWineTables() {
         coravin: "coravinTable"
     };
 
+    // For each category, clear and repopulate its table body
     Object.keys(categories).forEach((category) => {
         const tableBody = document.getElementById(categories[category]).getElementsByTagName("tbody")[0];
         tableBody.innerHTML = ""; // Clear the table body
@@ -319,7 +320,7 @@ function populateWineTables() {
         wineItems[category].forEach((wine, index) => {
             let sizeColumn = "";
 
-            // Handle fixed serving sizes for Sparkling and Coravin
+            // Fixed serving sizes for Sparkling and Coravin
             if (category === "sparkling") {
                 sizeColumn = `<span>5 oz</span>`;
             } else if (category === "coravin") {
@@ -340,12 +341,11 @@ function populateWineTables() {
             row.innerHTML = `
                 <td>${wine.name}</td>
                 <td>${sizeColumn}</td>
-                <td><input type="number" id="${category}-quantity-${index}" class="wine-quantity" value=""    inputmode="numeric" 
-                        pattern="[0-9]*"  min="0" /></td>
+                <td><input type="number" id="${category}-quantity-${index}" class="wine-quantity" value="" inputmode="numeric" pattern="[0-9]*" min="0" /></td>
             `;
             tableBody.appendChild(row);
 
-            // Add event listeners to handle user selections
+            // Attach event listeners to update totals dynamically without final UI changes
             const quantityInput = document.getElementById(`${category}-quantity-${index}`);
             quantityInput.addEventListener("input", () => wineCalculate());
 
@@ -357,84 +357,175 @@ function populateWineTables() {
     });
 }
 
-  function updateWineSubtotal(category, wine, index) {
+function updateWineSubtotal(category, wine, index) {
     const sizeSelect = document.getElementById(`${category}-size-${index}`);
     const quantityInput = document.getElementById(`${category}-quantity-${index}`);
     const quantity = parseInt(quantityInput.value) || 0;
-  
+
     let price = 0;
     if (sizeSelect.value === "5 oz") price = wine.price5oz || 0;
     if (sizeSelect.value === "Quartino") price = wine.priceQuartino || 0;
     if (sizeSelect.value === "4 oz") price = wine.price4oz || 0;
-  
+
     const subtotal = price * quantity;
-  
     const subtotalCell = document.getElementById(`${category}-subtotal-${index}`);
     if (subtotalCell) {
-      subtotalCell.innerText = `$${subtotal.toFixed(2)}`;
+        subtotalCell.innerText = `$${subtotal.toFixed(2)}`;
     }
-  }
+}
+
+// Existing dynamic calculation (updates totals live but does not alter table UIs)
 function wineCalculate() {
-    console.log("wineCalculate function called"); // Debugging: Verify the function is called
-
+    console.log("wineCalculate function called"); // Debugging
     let wineSubtotal = 0;
-
-    // Array to store selected wines
-    const selectedWines = [];
-
-    // Iterate through each wine category
     Object.keys(wineItems).forEach((category) => {
         wineItems[category].forEach((wine, index) => {
             const sizeSelect = document.getElementById(`${category}-size-${index}`);
             const quantityInput = document.getElementById(`${category}-quantity-${index}`);
             const quantity = parseInt(quantityInput?.value) || 0;
-
             let price = 0;
-
-            // Determine the price based on the serving size
             if (sizeSelect && sizeSelect.value === "5 oz") price = wine.price5oz || 0;
             if (sizeSelect && sizeSelect.value === "Quartino") price = wine.priceQuartino || 0;
-            if (!sizeSelect && category === "sparkling") price = wine.price5oz || 0; // Fixed 5 oz for Sparkling
-            if (!sizeSelect && category === "coravin") price = wine.price4oz || 0; // Fixed 4 oz for Coravin
+            if (!sizeSelect && category === "sparkling") price = wine.price5oz || 0;
+            if (!sizeSelect && category === "coravin") price = wine.price4oz || 0;
+            wineSubtotal += price * quantity;
+            console.log(`Category: ${category}, Wine: ${wine.name}, Quantity: ${quantity}, Price: ${price}`);
+        });
+    });
+    const wineGuestCount = parseInt(document.getElementById("wineGuestInput")?.value) || 1;
+    const winePerPerson = wineSubtotal / wineGuestCount;
+    document.getElementById("wineTotalPrice").innerText = wineSubtotal.toFixed(2);
+    document.getElementById("winePerPersonPrice").innerText = winePerPerson.toFixed(2);
+}
 
-            // Add to the subtotal
+// New function: called only when the "Calculate Wine Pairing" button is clicked.
+function calculateWinePairingUI() {
+    console.log("calculateWinePairingUI function called"); // Debugging
+
+    // Disable the Calculate button so it cannot be clicked again until reset.
+    const calculateButton = document.getElementById("calculateWineButton");
+    if (calculateButton) {
+        calculateButton.disabled = true;
+        calculateButton.style.opacity = "0.5";
+        calculateButton.style.cursor = "not-allowed";
+    }
+
+    let wineSubtotal = 0;
+    const selectedWines = [];
+
+    Object.keys(wineItems).forEach((category) => {
+        wineItems[category].forEach((wine, index) => {
+            const sizeSelect = document.getElementById(`${category}-size-${index}`);
+            const quantityInput = document.getElementById(`${category}-quantity-${index}`);
+            const quantity = parseInt(quantityInput?.value) || 0;
+            let price = 0;
+            if (sizeSelect && sizeSelect.value === "5 oz") price = wine.price5oz || 0;
+            if (sizeSelect && sizeSelect.value === "Quartino") price = wine.priceQuartino || 0;
+            if (!sizeSelect && category === "sparkling") price = wine.price5oz || 0;
+            if (!sizeSelect && category === "coravin") price = wine.price4oz || 0;
+
             wineSubtotal += price * quantity;
 
-            // If the wine has a quantity greater than 0, add it to the selected wines
             if (quantity > 0) {
                 selectedWines.push({
                     name: wine.name,
-                    size: sizeSelect ? sizeSelect.value : category === "sparkling" ? "5 oz" : "4 oz",
+                    size: sizeSelect ? sizeSelect.value : (category === "sparkling" ? "5 oz" : "4 oz"),
                     quantity: quantity,
                     price: price,
                     subtotal: price * quantity
                 });
             }
-
-            // Debugging: Log the calculations for each wine
-            console.log(`Category: ${category}, Wine: ${wine.name}, Quantity: ${quantity}, Price: ${price}, Subtotal: ${wineSubtotal}`);
+            console.log(`Category: ${category}, Wine: ${wine.name}, Quantity: ${quantity}, Price: ${price}`);
         });
     });
 
-    // Get the number of guests for wine pairing
-    const wineGuestCount = parseInt(document.getElementById("wineGuestInput")?.value) || 1; // Default to 1
+    const wineGuestCount = parseInt(document.getElementById("wineGuestInput")?.value) || 1;
     const winePerPerson = wineSubtotal / wineGuestCount;
-
-    // Debugging: Log the final calculations
-    console.log(`Total Wine Subtotal: ${wineSubtotal}, Guests: ${wineGuestCount}, Per Person: ${winePerPerson}`);
-
-    // Update the UI
     document.getElementById("wineTotalPrice").innerText = wineSubtotal.toFixed(2);
     document.getElementById("winePerPersonPrice").innerText = winePerPerson.toFixed(2);
 
-    // Dynamically render the table with only selected wines
+    // Instead of clearing/hiding the original tables (which might affect collapsible UI),
+    // we clear their tbody content so that they no longer show any rows.
+    const categoryIds = ["sparklingTable", "whiteRoseTable", "redTable", "coravinTable"];
+    categoryIds.forEach((id) => {
+        const tableBody = document.getElementById(id).getElementsByTagName("tbody")[0];
+        if (tableBody) {
+            tableBody.innerHTML = "";
+        }
+    });
+
+    // Render a new table that shows only the selected wines.
     renderSelectedWinesTable(selectedWines);
 }
 
+function renderSelectedWinesTable(selectedWines) {
+    // Check if a table for selected wines exists; if not, create it.
+    let selectedWinesTable = document.getElementById("selectedWinesTable");
+    if (!selectedWinesTable) {
+        selectedWinesTable = document.createElement("table");
+        selectedWinesTable.id = "selectedWinesTable";
+        selectedWinesTable.className = "menuTable";
+        selectedWinesTable.innerHTML = `
+            <thead>
+                <tr>
+                    <th>Wine Name</th>
+                    <th>Serving Size</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        `;
+        // Append this new table to the wine pairing content container (inside the collapsible section).
+        const winePairingContent = document.querySelector(".collapsible-section .content");
+        winePairingContent.appendChild(selectedWinesTable);
+    }
+    const tableBody = selectedWinesTable.getElementsByTagName("tbody")[0];
+    tableBody.innerHTML = ""; // Clear previous rows
 
+    selectedWines.forEach((wine) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${wine.name}</td>
+            <td>${wine.size}</td>
+            <td>${wine.quantity}</td>
+            <td>$${wine.subtotal.toFixed(2)}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
 
-  document.addEventListener("DOMContentLoaded", () => {
+function resetWineSelections() {
+    console.log("Resetting wine selections...");
+
+    // Remove the selected wines table if it exists.
+    const selectedWinesTable = document.getElementById("selectedWinesTable");
+    if (selectedWinesTable) {
+        selectedWinesTable.parentNode.removeChild(selectedWinesTable);
+    }
+
+    // Repopulate the original wine tables.
+    populateWineTables();
+
+    // Reset the totals.
+    document.getElementById("wineTotalPrice").innerText = "0.00";
+    document.getElementById("winePerPersonPrice").innerText = "0.00";
+
+    // Re-enable the Calculate Wine Pairing button.
+    const calculateButton = document.getElementById("calculateWineButton");
+    if (calculateButton) {
+        calculateButton.disabled = false;
+        calculateButton.style.opacity = "1";
+        calculateButton.style.cursor = "pointer";
+    }
+
+    console.log("Wine selections have been reset.");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
     const collapsibles = document.querySelectorAll(".collapsible");
+
+    // Collapsible logic: toggle display of adjacent content.
     collapsibles.forEach((button) => {
         button.addEventListener("click", () => {
             button.classList.toggle("active");
@@ -447,61 +538,6 @@ function wineCalculate() {
         });
     });
 
-    // Populate wine tables on page load
+    // Populate the wine tables on page load.
     populateWineTables();
 });
-function updateWineQuantity(category, wine, index) {
-    const quantityInput = document.getElementById(`${category}-quantity-${index}`);
-    const quantity = parseInt(quantityInput.value) || 0;
-
-    let price = 0;
-
-    if (category === "sparkling") {
-        price = wine.price5oz || 0; // Fixed 5 oz pour
-    } else if (category === "coravin") {
-        price = wine.price4oz || 0; // Fixed 4 oz pour
-    } else {
-        // For White, Rosé, and Red wines, get price based on selected size
-        const sizeSelect = document.getElementById(`${category}-size-${index}`);
-        if (sizeSelect.value === "5 oz") price = wine.price5oz || 0;
-        if (sizeSelect.value === "Quartino") price = wine.priceQuartino || 0;
-    }
-
-    // Dynamically update the wine subtotal
-    const subtotal = price * quantity;
-
-    // Optional: Log or track the user selection for debugging
-    console.log(`Category: ${category}, Wine: ${wine.name}, Quantity: ${quantity}, Price: $${price}, Subtotal: $${subtotal}`);
-
-    // Update the wine total dynamically
-    wineCalculate();
-}
-function resetWineSelections() {
-    console.log("Resetting wine selections...");
-
-    // Iterate through each wine category
-    Object.keys(wineItems).forEach((category) => {
-        wineItems[category].forEach((wine, index) => {
-            // Reset quantity input fields
-            const quantityInput = document.getElementById(`${category}-quantity-${index}`);
-            if (quantityInput) {
-                quantityInput.value = ""; // Clear the input field
-            }
-
-            // Reset dropdowns to their default values
-            const sizeSelect = document.getElementById(`${category}-size-${index}`);
-            if (sizeSelect) {
-                sizeSelect.selectedIndex = 0; // Reset to the first option
-            }
-        });
-    });
-
-    // Reset the total wine cost and per-person price
-    document.getElementById("wineTotalPrice").innerText = "0.00";
-    document.getElementById("winePerPersonPrice").innerText = "0.00";
-
-    console.log("Wine selections have been reset.");
-
-    
-}
-
