@@ -313,4 +313,5 @@ table {
 
 #heading {
     text-align: center; /* Centers the text horizontally */
+    margin-bottom: 1rem;
 }
