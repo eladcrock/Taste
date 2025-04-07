@@ -269,7 +269,9 @@ input.wine-quantity {
     border-radius: 4px;
     text-align: center;
 }
-
+#heading {
+    text-align: center; /* Centers the text horizontally */
+}
 .quantity:focus {
     border-color: #007bff;
     outline: none;
@@ -309,9 +311,4 @@ table {
 .table-container {
     overflow-x: auto; /* Enable horizontal scrolling for the container */
     white-space: nowrap; /* Prevent content from wrapping */
-}
-
-#heading {
-    text-align: center; /* Centers the text horizontally */
-    margin-bottom: 1rem;
 }
