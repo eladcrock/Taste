@@ -4,6 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    border: none
 }
 
 body {
@@ -251,7 +252,10 @@ td:nth-child(4), th:nth-child(4) {
     padding: 10px;
     border: 1px solid #ddd;
     margin-bottom: 10px;
+    border: none !important; /* Remove table borders and override inline styles */
+    border-collapse: collapse !important; /* Ensure no gaps between cells */
 }
+
 /* Ensure table rows and inputs are visible */
 table.menuTable tbody tr {
     display: table-row;
@@ -305,10 +309,20 @@ table {
     width: 100%; /* Make the table take up the full width of its container */
     table-layout: auto; /* Allow columns to adjust based on content */
     overflow-x: auto; /* Enable horizontal scrolling if needed */
+  border: none !important; /* Remove table borders and override inline styles */
+    border-collapse: collapse !important; /* Ensure no gaps between cells */
 }
 
 /* Ensure the parent container allows scrolling */
 .table-container {
+    
     overflow-x: auto; /* Enable horizontal scrolling for the container */
     white-space: nowrap; /* Prevent content from wrapping */
+}
+
+table th,
+table td {
+    border: none; /* Remove borders from table headers and cells */
+    border: none !important; /* Remove borders from table headers and cells */
+
 }
