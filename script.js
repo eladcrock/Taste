@@ -85,18 +85,22 @@ const wineItems = {
       { name: "Williams Selyem, Pinot Noir", price4oz: 45 },
       { name: "San Filippo, Brunello di Montalcino", price4oz: 38 },
       { name: "Casa Piena, Cabernet Sauvignon", price4oz: 55 },
-      { name: "Far Niente, Dolce, Late Harvest", price: 20 },
-      { name: "2019 Fattoria del Cerro, Vin Santo", price: 20 },
-      { name: "2017 Castelnau de Suduiraut, Sauternes", price: 20 },
-      { name: "Ben Rye Passito di Panteleria", price5oz: 20 },
-      { name: "2019 Fattoria del Cerro, Vin Santo", price: 20 },
-      { name: "Moscato di Asti", price: 13 },
-      { name: "Brachetto d' Acqui Piemonte", price: 15 },
+  
 
-      { name: "Warres, Otima Tawny Port", price: 20 },
-      { name: "Broadbest 2015 Vintage Port", price: 23 },
-      { name: "Aqua d Centro Limoncello", price: 16 },
+
+
+      { name: "Far Niente Dolce", price: 22 },
+      { name: "Vin Santo", price: 18 },
+      { name: "Sauternes", price: 20 },
+      { name: "Ben Rye Passito di Panteleria", price5oz: 22 },
+      { name: "Moscato di Asti", price: 13 },
+      { name: "Brachetto", price: 15 },
+
+      { name: "Warres Tawny", price: 20 },
+      { name: "Broadbest 2015 Port", price: 23 },
+      { name: "Aqua d Centro (Limoncello)", price: 16 },
       { name: "Esspresso Amaritini", price: 18 },
+
     ],
     dolci: [
         { name: "Far Niente Dolce", price: 22 },
