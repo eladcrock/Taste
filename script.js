@@ -53,30 +53,30 @@ const menuItems = [
 ];
 const wineItems = {
     sparkling: [
-      { name: "Adami, Bosco Di Gica, Prosecco Superiore Brut", price5oz: 15 },
-      { name: "Contadi Castaldi, Brut Rose’, Franciacorta", price5oz: 18 },
+      { name: "Adami Prosecco", price5oz: 15 },
+      { name: "Contadi Castaldi, Brut Rose’,", price5oz: 18 },
       { name: "Schramsberg, Brut Blanc de Blancs", price5oz: 23 },
-      { name: "Lanson, Le Black Label, Brut, Champagne", price5oz: 25 }
+      { name: "Lanson  Brut, Champagne", price5oz: 25 }
     ],
     whiteRose: [
       { name: "Frog’s Leap, Sauvignon Blanc", price5oz: 14, priceQuartino: 18 },
-      { name: "Buzzinelli, Pinot Grigio Collio", price5oz: 15, priceQuartino: 18 },
-      { name: "Massican, Gemina, Greco Fiano Falanghina Blend", price5oz: 16, priceQuartino: 22 },
+      { name: "Buzzinelli, Pinot Grigio ", price5oz: 15, priceQuartino: 18 },
+      { name: "Massican Blend", price5oz: 16, priceQuartino: 22 },
       { name: "Cornarea, Roero Arneis", price5oz: 16, priceQuartino: 22 },
       { name: "Frank Family, Chardonnay", price5oz: 17, priceQuartino: 23 },
-      { name: "Spottswoode, Sauvignon Blanc", price5oz: 18, priceQuartino: 26 },
-      { name: "Antinori Napa Valley, A26, Chardonnay", price5oz: 24, priceQuartino: 40 },
-      { name: "Tormaresca, Calafuria, Negroamaro Rosé", price5oz: 11, priceQuartino: 15 },
-      { name: "Handwritten, Carignan Blend Rosé", price5oz: 12, priceQuartino: 16 }
+      { name: "Spottswoode Sauvignon Blanc", price5oz: 18, priceQuartino: 26 },
+      { name: "Antinori  Chardonnay", price5oz: 24, priceQuartino: 40 },
+      { name: "Tormaresca Rosé", price5oz: 11, priceQuartino: 15 },
+      { name: "Handwritten Rosé", price5oz: 12, priceQuartino: 16 }
     ],
     red: [
-      { name: "Villa Calcinaia, Cappone, Chianti Classico", price5oz: 13, priceQuartino: 18 },
-      { name: "Cline, Seven Ranchlands, Pinot Noir", price5oz: 13, priceQuartino: 18 },
-      { name: "Neyers, Vista Notre, Zinfandel", price5oz: 16, priceQuartino: 25 },
+      { name: " Cappone, Chianti Classico", price5oz: 13, priceQuartino: 18 },
+      { name: "Cline Pinot Noir", price5oz: 13, priceQuartino: 18 },
+      { name: "Neyers Zinfandel", price5oz: 16, priceQuartino: 25 },
       { name: "Clos du Val, Cabernet Sauvignon", price5oz: 21, priceQuartino: 33 },
       { name: "David Arthur, Proprietary Red", price5oz: 21, priceQuartino: 33 },
       { name: "Flowers, Pinot Noir", price5oz: 21, priceQuartino: 33 },
-      { name: "Cavalier Bartolomeo, Barolo Altenasso", price5oz: 22, priceQuartino: 34 }
+      { name: "Cavalier Bartolomeo, Barolo", price5oz: 22, priceQuartino: 34 }
     ],
     coravin: [
       { name: "Laurent-Perrier, Brut Rose’", price4oz: 40 },
@@ -87,32 +87,18 @@ const wineItems = {
       { name: "Casa Piena, Cabernet Sauvignon", price4oz: 55 },
   
 
-
-
-      { name: "Far Niente Dolce", price: 22 },
-      { name: "Vin Santo", price: 18 },
-      { name: "Sauternes", price: 20 },
-      { name: "Ben Rye Passito di Panteleria", price5oz: 22 },
-      { name: "Moscato di Asti", price: 13 },
-      { name: "Brachetto", price: 15 },
-
-      { name: "Warres Tawny", price: 20 },
-      { name: "Broadbest 2015 Port", price: 23 },
-      { name: "Aqua d Centro (Limoncello)", price: 16 },
-      { name: "Esspresso Amaritini", price: 18 },
-
     ],
     dolci: [
         { name: "Far Niente Dolce", price: 22 },
         { name: "Vin Santo", price: 18 },
         { name: "Sauternes", price: 20 },
-        { name: "Ben Rye Passito di Panteleria", price5oz: 22 },
+        { name: "Ben Rye Passito di Panteleria", price: 22 },
         { name: "Moscato di Asti", price: 13 },
         { name: "Brachetto", price: 15 },
 
         { name: "Warres Tawny", price: 20 },
         { name: "Broadbest 2015 Port", price: 23 },
-        { name: "Aqua d Centro (Limoncello)", price: 16 },
+        { name: "Aqua d' Cetro (Limoncello)", price: 16 },
         { name: "Esspresso Amaritini", price: 18 },
 
 
@@ -360,11 +346,13 @@ function populateWineTables() {
         wineItems[category].forEach((wine, index) => {
             let sizeColumn = "";
 
-            // Fixed serving sizes for Sparkling and Coravin
+            // Fixed serving sizes for Sparkling, Coravin, and Dolci
             if (category === "sparkling") {
                 sizeColumn = `<span>5 oz</span>`;
             } else if (category === "coravin") {
                 sizeColumn = `<span>4 oz</span>`;
+            } else if (category === "dolci") {
+                sizeColumn = `<span>glass</span>`;
             } else {
                 // For White, Rosé, and Red wines, allow dropdown for serving sizes
                 const sizeOptions = wine.priceQuartino
@@ -377,6 +365,7 @@ function populateWineTables() {
                 `;
             }
 
+            // Create a row for each wine
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${wine.name}</td>
@@ -385,11 +374,12 @@ function populateWineTables() {
             `;
             tableBody.appendChild(row);
 
-            // Attach event listeners to update totals dynamically without final UI changes
+            // Attach event listeners to update totals dynamically
             const quantityInput = document.getElementById(`${category}-quantity-${index}`);
             quantityInput.addEventListener("input", () => wineCalculate());
 
-            if (category !== "sparkling" && category !== "coravin") {
+            // Only add event listeners to dropdowns for categories that have them
+            if (category !== "sparkling" && category !== "coravin" && category !== "dolci") {
                 const sizeSelect = document.getElementById(`${category}-size-${index}`);
                 sizeSelect.addEventListener("change", () => wineCalculate());
             }
@@ -406,6 +396,8 @@ function updateWineSubtotal(category, wine, index) {
     if (sizeSelect.value === "5 oz") price = wine.price5oz || 0;
     if (sizeSelect.value === "Quartino") price = wine.priceQuartino || 0;
     if (sizeSelect.value === "4 oz") price = wine.price4oz || 0;
+    if (!sizeSelect && category === "dolci") price = wine.price || 0;
+
 
     const subtotal = price * quantity;
     const subtotalCell = document.getElementById(`${category}-subtotal-${index}`);
@@ -428,10 +420,14 @@ function wineCalculate() {
             if (sizeSelect && sizeSelect.value === "Quartino") price = wine.priceQuartino || 0;
             if (!sizeSelect && category === "sparkling") price = wine.price5oz || 0;
             if (!sizeSelect && category === "coravin") price = wine.price4oz || 0;
+            if (!sizeSelect && category === "dolci") price = wine.price || 0; // Add this line to handle dolci wines
+
             wineSubtotal += price * quantity;
             console.log(`Category: ${category}, Wine: ${wine.name}, Quantity: ${quantity}, Price: ${price}`);
         });
     });
+    const wineAddedCharges = parseFloat(document.getElementById("wineAddedCharges")?.value) || 0;
+
     const wineGuestCount = parseInt(document.getElementById("wineGuestInput")?.value) || 1;
     const winePerPerson = wineSubtotal / wineGuestCount;
     document.getElementById("wineTotalPrice").innerText = wineSubtotal.toFixed(2);
@@ -463,13 +459,15 @@ function calculateWinePairingUI() {
             if (sizeSelect && sizeSelect.value === "Quartino") price = wine.priceQuartino || 0;
             if (!sizeSelect && category === "sparkling") price = wine.price5oz || 0;
             if (!sizeSelect && category === "coravin") price = wine.price4oz || 0;
+            if (!sizeSelect && category === "dolci") price = wine.price || 0; // Add this line to handle dolci wines
+
 
             wineSubtotal += price * quantity;
 
             if (quantity > 0) {
                 selectedWines.push({
                     name: wine.name,
-                    size: sizeSelect ? sizeSelect.value : (category === "sparkling" ? "5 oz" : "4 oz"),
+                    size: sizeSelect ? sizeSelect.value : (category === "sparkling" ? "5 oz" : (category === "coravin" ? "4 oz" : "glass")),
                     quantity: quantity,
                     price: price,
                     subtotal: price * quantity
@@ -486,7 +484,7 @@ function calculateWinePairingUI() {
 
     // Instead of clearing/hiding the original tables (which might affect collapsible UI),
     // we clear their tbody content so that they no longer show any rows.
-    const categoryIds = ["sparklingTable", "whiteRoseTable", "redTable", "coravinTable"];
+    const categoryIds = ["sparklingTable", "whiteRoseTable", "redTable", "coravinTable", "dolciTable"];
     categoryIds.forEach((id) => {
         const tableBody = document.getElementById(id).getElementsByTagName("tbody")[0];
         if (tableBody) {
